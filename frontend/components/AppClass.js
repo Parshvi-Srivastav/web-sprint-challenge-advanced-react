@@ -17,33 +17,34 @@ const initialState = {
 export default class AppClass extends React.Component {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       initialState: initialState
     }
+  }
+  
 
+  getXY = () => {
+    // It it not necessary to have a state to track the coordinates.
+    // It's enough to know what index the "B" is at, to be able to calculate them.
     const myArr = Array(9).fill(null);
     myArr[4] = 'B';
 
-  getXY = (indexOfB) => {
-    // It it not necessary to have a state to track the coordinates.
-    // It's enough to know what index the "B" is at, to be able to calculate them.
-  const coordinates = [
+    const coordinates = [
     '1,1', '2,1', '3,1', 
     '2,1', '2,2', '2,3', 
     '3,1', '3,2', '3,3' 
-  ]
+  ];
 
-    return coordinates[indexOfB]
-  }
-
-  getXY(4)
+    return coordinates[4]
+  };
   
   getXYMessage = () => {
-    // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
+    // It is not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
+   
   }
 
   reset = () => {
@@ -68,9 +69,6 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
-    axios.post('http://localhost:9000/api/result')
-    .then()
-    .catch()
   }
 
   render() {
@@ -78,7 +76,8 @@ export default class AppClass extends React.Component {
     return (
       <div id="wrapper" className={className}>
         <div className="info">
-          <h3 id="coordinates">Coordinates (2, 2)</h3>
+          <h3 id="coordinates"></h3>
+        
           <h3 id="steps">You moved 0 times</h3>
         </div>
         <div id="grid">
@@ -105,7 +104,6 @@ export default class AppClass extends React.Component {
           <input id="submit" type="submit"></input>
         </form>
       </div>
-    )
-  }
+    )}
 }
-}
+

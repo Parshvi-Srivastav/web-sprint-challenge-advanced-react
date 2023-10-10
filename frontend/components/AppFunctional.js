@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Suggested initial states
 const initialMessage = ''
@@ -7,14 +7,22 @@ const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
 
 export default function AppFunctional(props) {
+  const [ coordinates, setCoordinates] = useState(
+    ['1,1', '2,1', '3,1', '2,1', '2,2', '2,3', '3,1', '3,2', '3,3']
+    )
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
   function getXY() {
+    const theGrid = Array(9).fill(null);
+    theGrid[initialIndex] = "B"
+    
+    
+    return coordinates[initialIndex]
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
   }
-
+  console.log(getXY())
   function getXYMessage() {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
