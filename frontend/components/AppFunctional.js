@@ -1,28 +1,36 @@
 import React, { useState, useEffect } from 'react'
 
 // Suggested initial states
-const initialMessage = ''
-const initialEmail = ''
-const initialSteps = 0
-const initialIndex = 4 // the index the "B" is at
-
+const initialValues = {
+message: '',
+email: '',
+steps: 0,
+index: 4 // the index the "B" is at
+}
 export default function AppFunctional(props) {
-  const [ coordinates, setCoordinates] = useState(
-    ['1,1', '2,1', '3,1', '2,1', '2,2', '2,3', '3,1', '3,2', '3,3']
-    )
+  const [values, setValues] = useState(initialValues)
+  const [currentIdx, setCurrentIdx] = useState(4)
+  const theGrid = Array(9).fill(null);
+  theGrid[initialValues.index] = 'B'
+  const [coordinates, setCoordinates] = useState(
+    [
+    '1,1', '2,1', '3,1', 
+    '2,1', '2,2', '2,3', 
+    '3,1', '3,2', '3,3'
+    ]);
+
+  
+    
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
   function getXY() {
-    const theGrid = Array(9).fill(null);
-    theGrid[initialIndex] = "B"
-    
-    
-    return coordinates[initialIndex]
+
+    return coordinates[currentIdx]
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
   }
- 
+
   function getXYMessage() {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
@@ -32,16 +40,60 @@ export default function AppFunctional(props) {
   
 
   function reset() {
+   
     // Use this helper to reset all states to their initial values.
   }
 
+  
   function getNextIndex(direction) {
+
+      switch (direction) {
+        case 'left': 
+          setCurrentIdx(currentIdx => currentIdx > 0 ? currentIdx - 1 : currentIdx)
+            console.log(` you clicked left and index is now ${currentIdx}`)
+          
+          break; 
+  
+        case 'right':
+          setCurrentIdx(currentIdx => currentIdx < theGrid.length - 1 ? currentIdx + 1 : currentIdx)
+          console.log(` you clicked right and index is now ${currentIdx}`)
+          break;
+  
+        case 'up':       
+          setCurrentIdx(currentIdx => currentIdx >= 3 ? currentIdx - 3 : currentIdx)
+            console.log(` you clicked up and index is now ${currentIdx}`)
+          
+          break;
+        
+        case 'down': 
+          setCurrentIdx(currentIdx => currentIdx <= 6 ? currentIdx + 3 : currentIdx )
+            console.log(` you clicked down and index is now ${currentIdx}`)
+            break;
+  
+        default: 
+          break;
+
+    }
+    
+
+    
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
   }
 
   function move(evt) {
+    evt.getNextIndex()
+    // const leftBtn = document.querySelector('#left');
+    // const rightBtn = document.querySelector('#right');
+    // const upBtn = document.querySelector('#up');
+    // const downBtn = document.querySelector('#down');
+
+    // leftBtn.addEventListener('click', getNextIndex('left'));
+    // rightBtn.addEventListener('click', getNextIndex('right'));
+    // upBtn.addEventListener('click', getNextIndex('up'));
+    // downBtn.addEventListener('click', getNextIndex('down'));
+    
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
   }
@@ -73,11 +125,11 @@ export default function AppFunctional(props) {
         <h3 id="message"></h3>
       </div>
       <div id="keypad">
-        <button id="left">LEFT</button>
-        <button id="up">UP</button>
-        <button id="right">RIGHT</button>
-        <button id="down">DOWN</button>
-        <button id="reset">reset</button>
+        <button id="left" onClick={() => getNextIndex('left')}>LEFT</button>
+        <button id="up" onClick={() => getNextIndex('up')}>UP</button>
+        <button id="right" onClick={() => getNextIndex('right')}>RIGHT</button>
+        <button id="down" onClick={() => getNextIndex('down')}>DOWN</button>
+        <button id="reset" onClick={reset}>reset</button>
       </div>
       <form>
         <input id="email" type="email" placeholder="type email"></input>
