@@ -10,6 +10,7 @@ index: 4 // the index the "B" is at
 export default function AppFunctional(props) {
   const [values, setValues] = useState(initialValues)
   const [currentIdx, setCurrentIdx] = useState(4)
+  const [inputValue, setInputValue] = useState(initialValues.email)
   const theGrid = Array(9).fill(null);
   theGrid[initialValues.index] = 'B'
   const [coordinates, setCoordinates] = useState(
@@ -35,7 +36,13 @@ export default function AppFunctional(props) {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
+
     return `Coordinates (${getXY()})`
+  }
+
+  function getStepCount() {
+    
+
   }
   
 
@@ -49,7 +56,7 @@ export default function AppFunctional(props) {
     
       switch (direction) {
         case 'left': 
-          setCurrentIdx(currentIdx => currentIdx > 0 ? currentIdx - 1 : currentIdx)
+          setCurrentIdx(currentIdx => currentIdx > 0 ? currentIdx - 1 : currentIdx);
           
           break; 
   
@@ -81,14 +88,15 @@ export default function AppFunctional(props) {
   }
 
   function onChange(evt) {
-   const { value } = evt.target 
-   setValues(value)
-   
+    const newInput = evt.target.value;
+    setInputValue(newInput);
+
 
     // You will need this to update the value of the input.
   }
 
   function onSubmit(evt) {
+    evt.preventDefault();
     // Use a POST request to send a payload to the server.
   }
 
@@ -119,8 +127,12 @@ export default function AppFunctional(props) {
         <button id="reset" onClick={() => reset()}>reset</button>
       </div>
       <form>
-        <input onChange={onChange} id="email" type="email" placeholder="type email"></input>
-        <input id="submit" type="submit"></input>
+        <input 
+          onChange={onChange} 
+          id="email" 
+          type="email" 
+          placeholder="type email">
+        </input><input id="submit" type="submit"></input>
       </form>
     </div>
   )
