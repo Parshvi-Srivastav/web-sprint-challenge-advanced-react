@@ -19,8 +19,8 @@ export default function AppFunctional(props) {
   const [coordinates, setCoordinates] = useState(
     [
     '1,1', '2,1', '3,1', 
-    '2,1', '2,2', '2,3', 
-    '3,1', '3,2', '3,3'
+    '1,2', '2,2', '3,2', 
+    '1,3', '2,3', '3,3'
     ]
     );
 
@@ -99,8 +99,8 @@ export default function AppFunctional(props) {
 
     axios.post(`http://localhost:9000/api/result`, 
     { 
-      "x": Math.floor(currentIdx / 3) + 1, 
-      "y": (currentIdx % 3) + 1,
+      "x": (currentIdx % 3) + 1, 
+      "y": Math.floor(currentIdx / 3) + 1,
       steps: initialValues.steps,
       email: inputValue
     })
