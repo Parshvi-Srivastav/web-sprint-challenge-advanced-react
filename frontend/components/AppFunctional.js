@@ -40,34 +40,32 @@ export default function AppFunctional(props) {
   
 
   function reset() {
-   
+   setCurrentIdx(initialValues.index)
     // Use this helper to reset all states to their initial values.
   }
 
   
   function getNextIndex(direction) {
-
+    
       switch (direction) {
         case 'left': 
           setCurrentIdx(currentIdx => currentIdx > 0 ? currentIdx - 1 : currentIdx)
-            console.log(` you clicked left and index is now ${currentIdx}`)
           
           break; 
   
         case 'right':
-          setCurrentIdx(currentIdx => currentIdx < theGrid.length - 1 ? currentIdx + 1 : currentIdx)
-          console.log(` you clicked right and index is now ${currentIdx}`)
+          setCurrentIdx(currentIdx => currentIdx < theGrid.length - 1 ? currentIdx + 1 : currentIdx);
+
           break;
   
         case 'up':       
-          setCurrentIdx(currentIdx => currentIdx >= 3 ? currentIdx - 3 : currentIdx)
-            console.log(` you clicked up and index is now ${currentIdx}`)
+          setCurrentIdx(currentIdx => currentIdx >= 3 ? currentIdx - 3 : currentIdx);
           
           break;
         
         case 'down': 
-          setCurrentIdx(currentIdx => currentIdx <= 6 ? currentIdx + 3 : currentIdx )
-            console.log(` you clicked down and index is now ${currentIdx}`)
+          setCurrentIdx(currentIdx => currentIdx <= 6 ? currentIdx + 3 : currentIdx );
+
             break;
   
         default: 
@@ -82,23 +80,11 @@ export default function AppFunctional(props) {
     // this helper should return the current index unchanged.
   }
 
-  function move(evt) {
-    evt.getNextIndex()
-    // const leftBtn = document.querySelector('#left');
-    // const rightBtn = document.querySelector('#right');
-    // const upBtn = document.querySelector('#up');
-    // const downBtn = document.querySelector('#down');
-
-    // leftBtn.addEventListener('click', getNextIndex('left'));
-    // rightBtn.addEventListener('click', getNextIndex('right'));
-    // upBtn.addEventListener('click', getNextIndex('up'));
-    // downBtn.addEventListener('click', getNextIndex('down'));
-    
-    // This event handler can use the helper above to obtain a new index for the "B",
-    // and change any states accordingly.
-  }
-
   function onChange(evt) {
+   const { value } = evt.target 
+   setValues(value)
+   
+
     // You will need this to update the value of the input.
   }
 
@@ -113,13 +99,14 @@ export default function AppFunctional(props) {
         <h3 id="steps">You moved 0 times</h3>
       </div>
       <div id="grid">
-        {
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
-            </div>
-          ))
-        }
+          {
+            [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
+              <div key={idx} className={`square${idx === currentIdx ? ' active' : ''}`}>
+                {idx === currentIdx ? 'B' : null}
+              </div>
+            ))
+          }
+    
       </div>
       <div className="info">
         <h3 id="message"></h3>
@@ -129,10 +116,10 @@ export default function AppFunctional(props) {
         <button id="up" onClick={() => getNextIndex('up')}>UP</button>
         <button id="right" onClick={() => getNextIndex('right')}>RIGHT</button>
         <button id="down" onClick={() => getNextIndex('down')}>DOWN</button>
-        <button id="reset" onClick={reset}>reset</button>
+        <button id="reset" onClick={() => reset()}>reset</button>
       </div>
       <form>
-        <input id="email" type="email" placeholder="type email"></input>
+        <input onChange={onChange} id="email" type="email" placeholder="type email"></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
