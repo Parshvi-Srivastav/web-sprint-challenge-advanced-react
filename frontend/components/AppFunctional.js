@@ -21,7 +21,8 @@ export default function AppFunctional(props) {
     '1,1', '2,1', '3,1', 
     '2,1', '2,2', '2,3', 
     '3,1', '3,2', '3,3'
-    ]);
+    ]
+    );
 
   
     
@@ -44,21 +45,25 @@ export default function AppFunctional(props) {
   } 
 
   function reset() {
-   setCurrentIdx(initialValues.index)
+   setCurrentIdx(initialValues.index);
+   setSteps(initialValues.steps = 0);
     // Use this helper to reset all states to their initial values.
   }
 
   
   function getNextIndex(direction) {
-    
+    const arraySize = theGrid.length - 1
+    const rowSize = 3
+    let newIndex = currentIdx
+
       switch (direction) {
         case 'left': 
-          setCurrentIdx(currentIdx => currentIdx > 0 ? currentIdx - 1 : currentIdx);
+          setCurrentIdx(currentIdx % 3 !== 0 ? currentIdx - 1 : currentIdx)
 
           break; 
   
         case 'right':
-          setCurrentIdx(currentIdx => currentIdx < theGrid.length - 1 ? currentIdx + 1 : currentIdx);
+          setCurrentIdx(currentIdx % 3 !== 2 ? currentIdx + 1 : currentIdx);
           
           break;
   
@@ -137,7 +142,7 @@ export default function AppFunctional(props) {
         <button id="up" onClick={() => getNextIndex('up')}>UP</button>
         <button id="right" onClick={() => getNextIndex('right')}>RIGHT</button>
         <button id="down" onClick={() => getNextIndex('down')}>DOWN</button>
-        <button id="reset" onClick={() => reset()}>reset</button>
+        <button id="reset" onClick={reset}>reset</button>
       </div>
       <form onSubmit={onSubmit}>
         <input 
@@ -151,4 +156,3 @@ export default function AppFunctional(props) {
     </div>
   )
 }
-
