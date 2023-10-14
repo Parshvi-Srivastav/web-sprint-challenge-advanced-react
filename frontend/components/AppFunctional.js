@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // Suggested initial states
 const initialValues = {
@@ -43,6 +44,7 @@ export default function AppFunctional(props) {
   function getStepCount() {
     
 
+    return `You moved ${initialValues.steps} times`
   }
   
 
@@ -57,22 +59,22 @@ export default function AppFunctional(props) {
       switch (direction) {
         case 'left': 
           setCurrentIdx(currentIdx => currentIdx > 0 ? currentIdx - 1 : currentIdx);
-          
+          initialValues.steps++
           break; 
   
         case 'right':
           setCurrentIdx(currentIdx => currentIdx < theGrid.length - 1 ? currentIdx + 1 : currentIdx);
-
+          initialValues.steps++
           break;
   
         case 'up':       
           setCurrentIdx(currentIdx => currentIdx >= 3 ? currentIdx - 3 : currentIdx);
-          
+          initialValues.steps++
           break;
         
         case 'down': 
           setCurrentIdx(currentIdx => currentIdx <= 6 ? currentIdx + 3 : currentIdx );
-
+          initialValues.steps++
             break;
   
         default: 
@@ -97,14 +99,28 @@ export default function AppFunctional(props) {
 
   function onSubmit(evt) {
     evt.preventDefault();
+
+    axios.post(`http://localhost:9000/api/result`, 
+    { 
+      "x": 1, 
+      "y": 2, 
+      [initialValues.steps]: [...values], 
+      "email": "lady@gaga.com" 
+    })
+    .then(res => {
+      console.log(res.data)
+    })
+    
+   
     // Use a POST request to send a payload to the server.
   }
+  
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved 0 times</h3>
+        <h3 id="steps">You moved {initialValues.steps} times!</h3>
       </div>
       <div id="grid">
           {
@@ -126,7 +142,7 @@ export default function AppFunctional(props) {
         <button id="down" onClick={() => getNextIndex('down')}>DOWN</button>
         <button id="reset" onClick={() => reset()}>reset</button>
       </div>
-      <form>
+      <form onSubmit={onSubmit}>
         <input 
           onChange={onChange} 
           id="email" 
@@ -137,3 +153,4 @@ export default function AppFunctional(props) {
     </div>
   )
 }
+
