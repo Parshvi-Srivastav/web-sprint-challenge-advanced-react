@@ -8,10 +8,12 @@ email: '',
 steps: 0,
 index: 4 // the index the "B" is at
 }
+
 export default function AppFunctional(props) {
   const [values, setValues] = useState(initialValues)
   const [currentIdx, setCurrentIdx] = useState(4)
   const [inputValue, setInputValue] = useState(initialValues.email)
+  const [steps, setSteps] = useState(initialValues.steps)
   const theGrid = Array(9).fill(null);
   theGrid[initialValues.index] = 'B'
   const [coordinates, setCoordinates] = useState(
@@ -39,14 +41,7 @@ export default function AppFunctional(props) {
     // returns the fully constructed string.
 
     return `Coordinates (${getXY()})`
-  }
-
-  function getStepCount() {
-    
-
-    return `You moved ${initialValues.steps} times`
-  }
-  
+  } 
 
   function reset() {
    setCurrentIdx(initialValues.index)
@@ -59,31 +54,28 @@ export default function AppFunctional(props) {
       switch (direction) {
         case 'left': 
           setCurrentIdx(currentIdx => currentIdx > 0 ? currentIdx - 1 : currentIdx);
-          initialValues.steps++
+
           break; 
   
         case 'right':
           setCurrentIdx(currentIdx => currentIdx < theGrid.length - 1 ? currentIdx + 1 : currentIdx);
-          initialValues.steps++
+          
           break;
   
         case 'up':       
           setCurrentIdx(currentIdx => currentIdx >= 3 ? currentIdx - 3 : currentIdx);
-          initialValues.steps++
+
           break;
         
         case 'down': 
-          setCurrentIdx(currentIdx => currentIdx <= 6 ? currentIdx + 3 : currentIdx );
-          initialValues.steps++
+          setCurrentIdx(currentIdx => currentIdx < 6 ? currentIdx + 3 : currentIdx );
+          
             break;
   
         default: 
           break;
 
     }
-    
-
-    
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
@@ -102,19 +94,24 @@ export default function AppFunctional(props) {
 
     axios.post(`http://localhost:9000/api/result`, 
     { 
-      "x": 1, 
-      "y": 2, 
-      [initialValues.steps]: [...values], 
-      "email": "lady@gaga.com" 
+      "x": Math.floor(currentIdx / 3) + 1, 
+      "y": (currentIdx % 3) + 1,
+      steps: initialValues.steps,
+      email: inputValue
     })
-    .then(res => {
-      console.log(res.data)
+    .then(response => {
+      response.data.message
     })
-    
-   
+    .catch(err => console.error(err.message))
     // Use a POST request to send a payload to the server.
   }
   
+  useEffect(() => {
+    if (coordinates !== currentIdx) {
+      initialValues.steps++
+    }
+    
+  }, [currentIdx, steps])
 
   return (
     <div id="wrapper" className={props.className}>
@@ -147,6 +144,7 @@ export default function AppFunctional(props) {
           onChange={onChange} 
           id="email" 
           type="email" 
+          value={inputValue}
           placeholder="type email">
         </input><input id="submit" type="submit"></input>
       </form>
