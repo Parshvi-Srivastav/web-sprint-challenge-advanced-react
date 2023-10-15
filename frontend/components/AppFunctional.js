@@ -10,10 +10,10 @@ index: 4 // the index the "B" is at
 }
 
 const errorMsgs = {
- right: `You can't go right`,
- left: `You can't go left`,
- up: `You can't go up`,
- down: `You can't go down`,
+ right: "You can't go right",
+ left: "You can't go left",
+ up: "You can't go up",
+ down: "You can't go down",
 }
 
 export default function AppFunctional(props) {
@@ -68,9 +68,7 @@ export default function AppFunctional(props) {
           setCurrentIdx(currentIdx % 3 !== 0 ? currentIdx - 1 : currentIdx)
           if (currentIdx == 0 || currentIdx == 3 || currentIdx == 6) {
             setErrMessages(errorMsgs.left)
-          } else {
-            setErrMessages('')
-          }
+          } 
           break; 
   
         case 'right':
@@ -146,7 +144,7 @@ export default function AppFunctional(props) {
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
         <h3 id="steps">You moved {initialValues.steps} times!</h3>
-       {errMessages && <p>Error: {errMessages}</p> }
+       {errMessages && <p id='error'>Error: {errMessages}</p> }
       </div>
       <div id="grid">
           {
