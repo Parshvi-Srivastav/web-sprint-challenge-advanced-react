@@ -129,6 +129,7 @@ export default function AppFunctional(props) {
     })
     .then(response => {
       response.data.message
+      console.log(response.data.message)
     })
     .catch(err => console.error(err.message))
     // Use a POST request to send a payload to the server.
