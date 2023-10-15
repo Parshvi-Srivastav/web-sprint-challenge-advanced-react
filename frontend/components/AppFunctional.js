@@ -18,6 +18,7 @@ const errorMsgs = {
 
 export default function AppFunctional(props) {
   const [errMessages, setErrMessages] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
   const [currentIdx, setCurrentIdx] = useState(4)
   const [inputValue, setInputValue] = useState(initialValues.email)
   let [steps, setSteps] = useState(0)
@@ -56,6 +57,7 @@ export default function AppFunctional(props) {
    setSteps(initialValues.steps);
    setErrMessages(initialValues.message);
    setInputValue(initialValues.email);
+   setSuccessMsg(initialValues.message)
     // Use this helper to reset all states to their initial values.
   }
 
@@ -128,8 +130,7 @@ export default function AppFunctional(props) {
       email: inputValue
     })
     .then(response => {
-      response.data.message
-      console.log(response.data.message)
+      setSuccessMsg(response.data.message)
     })
     .catch(err => console.error(err.message))
     // Use a POST request to send a payload to the server.
@@ -160,7 +161,7 @@ export default function AppFunctional(props) {
     
       </div>
       <div className="info">
-        <h3 id="message">{errMessages}</h3>
+        <h3 id="message">{errMessages || successMsg}</h3>
       </div>
       <div id="keypad">
         <button id="left" onClick={() => getNextIndex('left')}>LEFT</button>
@@ -175,7 +176,6 @@ export default function AppFunctional(props) {
           id="email" 
           type="email" 
           value={inputValue}
-          
           placeholder="type email">
         </input><input id="submit" type="submit"></input>
       </form>
