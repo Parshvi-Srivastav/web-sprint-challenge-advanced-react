@@ -63,9 +63,7 @@ export default function AppFunctional(props) {
 
   
   function getNextIndex(direction) {
-    const arraySize = theGrid.length - 1
-    const rowSize = 3
-    let newIndex = currentIdx
+    setSuccessMsg('')
 
       switch (direction) {
         case 'left': 
@@ -119,7 +117,10 @@ export default function AppFunctional(props) {
     // You will need this to update the value of the input.
   }
 
+
+
   function onSubmit(evt) {
+
     evt.preventDefault();
 
     axios.post(`http://localhost:9000/api/result`, 
@@ -176,8 +177,10 @@ export default function AppFunctional(props) {
           id="email" 
           type="email" 
           value={inputValue}
-          placeholder="type email">
-        </input><input id="submit" type="submit"></input>
+          placeholder="type email"
+        >
+        </input>
+        <input id="submit" type="submit" ></input>
       </form>
     </div>
   )
