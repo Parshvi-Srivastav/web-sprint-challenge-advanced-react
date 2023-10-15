@@ -9,8 +9,15 @@ steps: 0,
 index: 4 // the index the "B" is at
 }
 
+const errorMsgs = {
+ right: 'You cant go right',
+ left: 'You cant go left',
+ up: 'You cant go up',
+ down: 'You cant go down'
+}
+
 export default function AppFunctional(props) {
-  const [values, setValues] = useState(initialValues)
+  const [errMessages, setErrMessages] = useState('')
   const [currentIdx, setCurrentIdx] = useState(4)
   const [inputValue, setInputValue] = useState(initialValues.email)
   const [steps, setSteps] = useState(initialValues.steps)
@@ -59,22 +66,38 @@ export default function AppFunctional(props) {
       switch (direction) {
         case 'left': 
           setCurrentIdx(currentIdx % 3 !== 0 ? currentIdx - 1 : currentIdx)
-
+          if (currentIdx == 0 || currentIdx == 3 || currentIdx == 6) {
+            setErrMessages(errorMsgs.left)
+          } else {
+            setErrMessages('')
+          }
           break; 
   
         case 'right':
           setCurrentIdx(currentIdx % 3 !== 2 ? currentIdx + 1 : currentIdx);
-          
+          if (currentIdx == 2 || currentIdx == 5 || currentIdx == 8) {
+            setErrMessages(errorMsgs.right)
+          } else {
+            setErrMessages('')
+          }
           break;
   
         case 'up':       
           setCurrentIdx(currentIdx => currentIdx >= 3 ? currentIdx - 3 : currentIdx);
-
+          if (currentIdx == 0 || currentIdx == 1 || currentIdx == 2) {
+            setErrMessages(errorMsgs.up)
+          } else {
+            setErrMessages('')
+          }
           break;
         
         case 'down': 
           setCurrentIdx(currentIdx => currentIdx < 6 ? currentIdx + 3 : currentIdx );
-          
+          if (currentIdx == 6 || currentIdx == 7 || currentIdx == 8) {
+            setErrMessages(errorMsgs.down)
+          } else {
+            setErrMessages('')
+          }
             break;
   
         default: 
@@ -123,6 +146,7 @@ export default function AppFunctional(props) {
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
         <h3 id="steps">You moved {initialValues.steps} times!</h3>
+       {errMessages && <p>Error: {errMessages}</p> }
       </div>
       <div id="grid">
           {
