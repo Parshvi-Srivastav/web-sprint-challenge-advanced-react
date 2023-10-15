@@ -20,7 +20,7 @@ export default function AppFunctional(props) {
   const [errMessages, setErrMessages] = useState('')
   const [currentIdx, setCurrentIdx] = useState(4)
   const [inputValue, setInputValue] = useState(initialValues.email)
-  const [steps, setSteps] = useState(initialValues.steps)
+  let [steps, setSteps] = useState(0)
   const theGrid = Array(9).fill(null);
   theGrid[initialValues.index] = 'B'
   const [coordinates, setCoordinates] = useState(
@@ -53,7 +53,7 @@ export default function AppFunctional(props) {
 
   function reset() {
    setCurrentIdx(initialValues.index);
-   setSteps(initialValues.steps = 0);
+   setSteps(initialValues.steps)
     // Use this helper to reset all states to their initial values.
   }
 
@@ -122,7 +122,7 @@ export default function AppFunctional(props) {
     { 
       "x": (currentIdx % 3) + 1, 
       "y": Math.floor(currentIdx / 3) + 1,
-      steps: initialValues.steps,
+      steps: steps,
       email: inputValue
     })
     .then(response => {
@@ -133,17 +133,18 @@ export default function AppFunctional(props) {
   }
   
   useEffect(() => {
-    if (coordinates !== currentIdx) {
-      initialValues.steps++
+    
+    if (currentIdx !== initialValues.index) {
+      setSteps(steps + 1)
     }
     
-  }, [currentIdx, steps])
+  }, [currentIdx])
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved {initialValues.steps} times!</h3>
+        <h3 id="steps">You moved {steps} times</h3>
       </div>
       <div id="grid">
           {
