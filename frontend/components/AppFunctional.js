@@ -53,7 +53,9 @@ export default function AppFunctional(props) {
 
   function reset() {
    setCurrentIdx(initialValues.index);
-   setSteps(initialValues.steps)
+   setSteps(initialValues.steps);
+   setErrMessages(initialValues.message);
+   setInputValue(initialValues.email);
     // Use this helper to reset all states to their initial values.
   }
 
@@ -144,7 +146,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">{`You moved ${steps} ${steps === 1 ? 'time' : 'times'}`}</h3>
       </div>
       <div id="grid">
           {
@@ -172,6 +174,7 @@ export default function AppFunctional(props) {
           id="email" 
           type="email" 
           value={inputValue}
+          
           placeholder="type email">
         </input><input id="submit" type="submit"></input>
       </form>
