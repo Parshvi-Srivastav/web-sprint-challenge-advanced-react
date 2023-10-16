@@ -16,16 +16,16 @@ const errorMsgs = {
  down: "You can't go down",
 }
 
-function customTextMatcher(content, element) {
-  const hasText = node => (node.textContent === content);
-  const elementHasText = hasText(element)
+// function customTextMatcher(content, element) {
+//   const hasText = node => (node.textContent === content);
+//   const elementHasText = hasText(element)
   
-  if (elementHasText) {
-    return true;
-  }
-  const children = Array.from(element.children);
-  return children.some((child) => customTextMatcher(content, child));
-  }
+//   if (elementHasText) {
+//     return true;
+//   }
+//   const children = Array.from(element.children);
+//   return children.some((child) => customTextMatcher(content, child));
+//   }
 
 export default function AppFunctional(props) {
   const [errMessages, setErrMessages] = useState('')

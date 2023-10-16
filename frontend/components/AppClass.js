@@ -17,27 +17,29 @@ const initialState = {
 export default class AppClass extends React.Component {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      initialState: initialState
+      initialState: initialState,
+      coordinates: [
+        '1,1', '2,1', '3,1', 
+        '2,1', '2,2', '2,3', 
+        '3,1', '3,2', '3,3' 
+      ]
     }
+    const theGrid = Array(9).fill(null);
+    theGrid[4] = 'B';
+
+    
   }
   
 
   getXY = () => {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
-    const myArr = Array(9).fill(null);
-    myArr[4] = 'B';
+      const xyOfB = this.state.coordinates[this.state.initialState.index]
 
-    const coordinates = [
-    '1,1', '2,1', '3,1', 
-    '2,1', '2,2', '2,3', 
-    '3,1', '3,2', '3,3' 
-  ];
-
-    return coordinates[4]
+    return xyOfB
   };
   
   getXYMessage = () => {
