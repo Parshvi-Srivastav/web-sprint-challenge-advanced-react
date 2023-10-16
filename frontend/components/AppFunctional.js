@@ -16,6 +16,17 @@ const errorMsgs = {
  down: "You can't go down",
 }
 
+function customTextMatcher(content, element) {
+  const hasText = node => (node.textContent === content);
+  const elementHasText = hasText(element)
+  
+  if (elementHasText) {
+    return true;
+  }
+  const children = Array.from(element.children);
+  return children.some((child) => customTextMatcher(content, child));
+  }
+
 export default function AppFunctional(props) {
   const [errMessages, setErrMessages] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
@@ -117,8 +128,6 @@ export default function AppFunctional(props) {
     // You will need this to update the value of the input.
   }
 
-
-
   function onSubmit(evt) {
 
     evt.preventDefault();
@@ -131,12 +140,15 @@ export default function AppFunctional(props) {
       email: inputValue
     })
     .then(response => {
+      console.log(response)
       setSuccessMsg(response.data.message)
+      
     })
     .catch(err => console.error(err.message))
     // Use a POST request to send a payload to the server.
   }
   
+
   useEffect(() => {
     
     if (currentIdx !== initialValues.index) {
