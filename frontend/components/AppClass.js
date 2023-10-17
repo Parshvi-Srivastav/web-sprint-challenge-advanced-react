@@ -140,6 +140,9 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
+    if (this.state.inputValue === '') {
+      this.setState({errMessages:'Ouch: email is required'})
+    }
     axios
       .post('http://localhost:9000/api/result', {
         "x": (this.state.currentIdx % 3) + 1,

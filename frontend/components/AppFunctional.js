@@ -131,7 +131,9 @@ export default function AppFunctional(props) {
   function onSubmit(evt) {
 
     evt.preventDefault();
-
+    if (inputValue === '') {
+      setErrMessages('Ouch: email is required')
+    }
     axios.post(`http://localhost:9000/api/result`, 
     { 
       "x": (currentIdx % 3) + 1, 
