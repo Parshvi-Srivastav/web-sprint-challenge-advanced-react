@@ -64,15 +64,17 @@ export default class AppClass extends React.Component {
 
   reset = () => {
     this.setState({
-      initalState: initialState,
-      successMsg: initialState.message,
-      errorMsg: initialState.message,
+      errMessages: initialState.message,
+      successMessage: initialState.message,
+      currentIdx: initialState.index,
+      inputValue: initialState.email,
+      steps: initialState.steps,
     })
     // Use this helper to reset all states to their initial values.
   }
 
   getNextIndex = (direction) => {
-    this.setState({successMsg: ''});
+    this.setState({ successMsg: '' });
 
     switch(direction){
       case 'left':
@@ -81,6 +83,8 @@ export default class AppClass extends React.Component {
         })));
         if (this.state.currentIdx === 0 || this.state.currentIdx === 3 || this.state.currentIdx === 6) {
           this.setState({ errMessages: errorMsgs.left });
+        } else {
+          this.setState({ errMessages: ''})
         }
       break;
 
@@ -138,22 +142,25 @@ export default class AppClass extends React.Component {
     evt.preventDefault();
     axios
       .post('http://localhost:9000/api/result', {
-        x: (this.state.currentIdx % 3) + 1,
-        y: Math.floor(this.state.currentIdx / 3) + 1,
+        "x": (this.state.currentIdx % 3) + 1,
+        "y": Math.floor(this.state.currentIdx / 3) + 1,
         steps: this.state.steps,
         email: this.state.inputValue,
       })
       .then((response) => {
+        console.log(response)
         this.setState({ successMsg: response.state.message });
       })
       .catch((err) => console.error(err.message));
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.currentIdx !== initialState.index) {
-  //     setState((prevState) => ({ steps: prevState.steps + 1 }));
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.currentIdx !== initialState.index && this.state.currentIdx !== prevState.currentIdx) {
+      this.setState((prevState) => ({ steps: prevState.steps + 1 }), () => {
+        
+      });
+    }
+  }
 
   render() {
     const { className } = this.props
