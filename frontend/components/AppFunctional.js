@@ -16,16 +16,18 @@ const errorMsgs = {
  down: "You can't go down",
 }
 
-// function customTextMatcher(content, element) {
-//   const hasText = node => (node.textContent === content);
-//   const elementHasText = hasText(element)
+function customTextMatcher(content, element) {
+  const hasText = node => (node.textContent === content);
+  const elementHasText = hasText(element)
   
-//   if (elementHasText) {
-//     return true;
-//   }
-//   const children = Array.from(element.children);
-//   return children.some((child) => customTextMatcher(content, child));
-//   }
+  if (elementHasText) {
+    return true;
+  }
+  const children = Array.from(element.children);
+  return children.some((child) => customTextMatcher(content, child));
+  }
+
+
 
 export default function AppFunctional(props) {
   const [errMessages, setErrMessages] = useState('')
@@ -120,20 +122,12 @@ export default function AppFunctional(props) {
     // this helper should return the current index unchanged.
   }
 
-  function onChange(evt) {
-    const newInput = evt.target.value;
-    setInputValue(newInput);
 
-
-    // You will need this to update the value of the input.
-  }
 
   function onSubmit(evt) {
 
     evt.preventDefault();
-    if (inputValue === '') {
-      setErrMessages('Ouch: email is required')
-    }
+    
     axios.post(`http://localhost:9000/api/result`, 
     { 
       "x": (currentIdx % 3) + 1, 
@@ -147,7 +141,7 @@ export default function AppFunctional(props) {
       setInputValue(initialValues.email)
       
     })
-    .catch(err => console.error(err.message))
+    .catch(error => console.error(error.response.data))
     // Use a POST request to send a payload to the server.
   }
   
