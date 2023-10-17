@@ -27,7 +27,13 @@ function customTextMatcher(content, element) {
   return children.some((child) => customTextMatcher(content, child));
   }
 
+function onChange(evt) {
+  const newInput = evt.target.value;
+  setInputValue(newInput);
 
+
+  // You will need this to update the value of the input.
+}
 
 export default function AppFunctional(props) {
   const [errMessages, setErrMessages] = useState('')
@@ -122,12 +128,20 @@ export default function AppFunctional(props) {
     // this helper should return the current index unchanged.
   }
 
-
+  function onChange(evt) {
+    const newInput = evt.target.value;
+    setInputValue(newInput);
+    // You will need this to update the value of the input.
+  }
 
   function onSubmit(evt) {
 
     evt.preventDefault();
-    
+    if (inputValue === '') {
+      setErrMessages('Ouch: email is required')
+    }
+
+
     axios.post(`http://localhost:9000/api/result`, 
     { 
       "x": (currentIdx % 3) + 1, 
@@ -141,7 +155,7 @@ export default function AppFunctional(props) {
       setInputValue(initialValues.email)
       
     })
-    .catch(err => console.error(err.response.data))
+    .catch(err => console.error(err.message))
     // Use a POST request to send a payload to the server.
   }
   
