@@ -141,7 +141,7 @@ export default function AppFunctional(props) {
       setInputValue(initialValues.email)
       
     })
-    .catch(error => console.error(error.response.data))
+    .catch(err => console.error(err.response.data))
     // Use a POST request to send a payload to the server.
   }
   
