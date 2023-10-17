@@ -148,10 +148,11 @@ export default class AppClass extends React.Component {
         email: this.state.inputValue,
       })
       .then((response) => {
-        console.log(response)
-        this.setState({ successMsg: response.state.message });
+        this.setState({ successMessage: response.data.message });
+        this.setState({ inputValue: initialEmail})
+        console.log(response.data.message)
       })
-      .catch((err) => console.error(err.message));
+      .catch((err) => console.error(err));
   }
 
   componentDidUpdate(prevProps, prevState) {

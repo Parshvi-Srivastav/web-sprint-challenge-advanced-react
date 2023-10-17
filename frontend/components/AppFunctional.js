@@ -142,6 +142,7 @@ export default function AppFunctional(props) {
     .then(response => {
       console.log(response)
       setSuccessMsg(response.data.message)
+      setInputValue(initialValues.email)
       
     })
     .catch(err => console.error(err.message))
