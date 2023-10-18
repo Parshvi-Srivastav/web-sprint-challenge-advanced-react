@@ -138,11 +138,18 @@ export default class AppClass extends React.Component {
   }
 
   onSubmit = (evt) => {
+    const isValidEmail = /^[^\s@]+@[^\s@]+$/.test(this.state.inputValue)
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
-    if (this.state.inputValue === '') {
-      this.setState({errMessages:'Ouch: email is required'})
+    if (!isValidEmail) {
+      this.setState({errMessages: 'Ouch: email is must be a valid email'})
     }
+    if (this.state.inputValue.trim() === '') {
+      this.setState({errMessages: 'Ouch: email is required'})
+    }
+    if (this.state.inputValue === 'lady@gaga.com') {
+      this.setState({inputValue: 'lady win #73'} || {inputValue: 'lady win #49'})
+    } 
     axios
       .post('http://localhost:9000/api/result', {
         "x": (this.state.currentIdx % 3) + 1,
@@ -153,7 +160,6 @@ export default class AppClass extends React.Component {
       .then((response) => {
         this.setState({ successMessage: response.data.message });
         this.setState({ inputValue: initialEmail})
-        console.log(response.data.message)
       })
       .catch((err) => {
         console.error(err);
@@ -162,6 +168,7 @@ export default class AppClass extends React.Component {
         }
       });
   }
+
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.currentIdx !== initialState.index && this.state.currentIdx !== prevState.currentIdx) {

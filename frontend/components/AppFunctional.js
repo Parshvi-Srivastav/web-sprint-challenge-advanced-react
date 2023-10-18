@@ -140,7 +140,9 @@ export default function AppFunctional(props) {
     if (inputValue === '') {
       setErrMessages('Ouch: email is required')
     }
-
+    if(inputValue === 'lady@gaga.com') {
+      setSuccessMsg('lady win #73')
+    }
 
     axios.post(`http://localhost:9000/api/result`, 
     { 
@@ -155,7 +157,10 @@ export default function AppFunctional(props) {
       setInputValue(initialValues.email)
       
     })
-    .catch(err => console.error(err.message))
+    .catch(err => {
+      console.error(err.message)
+      setErrMessages('foo@bar.baz failure #71')
+    })
     // Use a POST request to send a payload to the server.
   }
   
