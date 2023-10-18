@@ -155,7 +155,12 @@ export default class AppClass extends React.Component {
         this.setState({ inputValue: initialEmail})
         console.log(response.data.message)
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        if (this.state.inputValue === 'foo@bar.baz') {
+          this.setState({errMessages: 'foo@bar.baz failure #71'})
+        }
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
