@@ -1,64 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 // Suggested initial states
 const initialValues = {
-message: '',
-email: '',
-steps: 0,
-index: 4 // the index the "B" is at
-}
+  message: "",
+  email: "",
+  steps: 0,
+  index: 4, // the index the "B" is at
+};
 
 const errorMsgs = {
- right: "You can't go right",
- left: "You can't go left",
- up: "You can't go up",
- down: "You can't go down",
-}
+  right: "You can't go right",
+  left: "You can't go left",
+  up: "You can't go up",
+  down: "You can't go down",
+};
 
 function customTextMatcher(content, element) {
-  const hasText = node => (node.textContent === content);
-  const elementHasText = hasText(element)
-  
+  const hasText = (node) => node.textContent === content;
+  const elementHasText = hasText(element);
+
   if (elementHasText) {
     return true;
   }
   const children = Array.from(element.children);
   return children.some((child) => customTextMatcher(content, child));
-  }
+}
 
 function onChange(evt) {
   const newInput = evt.target.value;
   setInputValue(newInput);
 
-
   // You will need this to update the value of the input.
 }
 
 export default function AppFunctional(props) {
-  const [errMessages, setErrMessages] = useState('')
-  const [successMsg, setSuccessMsg] = useState('')
-  const [currentIdx, setCurrentIdx] = useState(4)
-  const [inputValue, setInputValue] = useState(initialValues.email)
-  let [steps, setSteps] = useState(0)
+  const [errMessages, setErrMessages] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [currentIdx, setCurrentIdx] = useState(4);
+  const [inputValue, setInputValue] = useState(initialValues.email);
+  let [steps, setSteps] = useState(0);
   const theGrid = Array(9).fill(null);
-  theGrid[initialValues.index] = 'B'
-  const [coordinates, setCoordinates] = useState(
-    [
-    '1,1', '2,1', '3,1', 
-    '1,2', '2,2', '3,2', 
-    '1,3', '2,3', '3,3'
-    ]
-    );
+  theGrid[initialValues.index] = "B";
+  const [coordinates, setCoordinates] = useState([
+    "1,1",
+    "2,1",
+    "3,1",
+    "1,2",
+    "2,2",
+    "3,2",
+    "1,3",
+    "2,3",
+    "3,3",
+  ]);
 
-  
-    
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
   function getXY() {
-
-    return coordinates[currentIdx]
+    return coordinates[currentIdx];
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
   }
@@ -68,60 +68,62 @@ export default function AppFunctional(props) {
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
 
-    return `Coordinates (${getXY()})`
-  } 
+    return `Coordinates (${getXY()})`;
+  }
 
   function reset() {
-   setCurrentIdx(initialValues.index);
-   setSteps(initialValues.steps);
-   setErrMessages(initialValues.message);
-   setInputValue(initialValues.email);
-   setSuccessMsg(initialValues.message)
+    setCurrentIdx(initialValues.index);
+    setSteps(initialValues.steps);
+    setErrMessages(initialValues.message);
+    setInputValue(initialValues.email);
+    setSuccessMsg(initialValues.message);
     // Use this helper to reset all states to their initial values.
   }
 
-  
   function getNextIndex(direction) {
-    setSuccessMsg('')
+    setSuccessMsg("");
 
-      switch (direction) {
-        case 'left': 
-          setCurrentIdx(currentIdx % 3 !== 0 ? currentIdx - 1 : currentIdx)
-          if (currentIdx == 0 || currentIdx == 3 || currentIdx == 6) {
-            setErrMessages(errorMsgs.left)
-          } 
-          break; 
-  
-        case 'right':
-          setCurrentIdx(currentIdx % 3 !== 2 ? currentIdx + 1 : currentIdx);
-          if (currentIdx == 2 || currentIdx == 5 || currentIdx == 8) {
-            setErrMessages(errorMsgs.right)
-          } else {
-            setErrMessages('')
-          }
-          break;
-  
-        case 'up':       
-          setCurrentIdx(currentIdx => currentIdx >= 3 ? currentIdx - 3 : currentIdx);
-          if (currentIdx == 0 || currentIdx == 1 || currentIdx == 2) {
-            setErrMessages(errorMsgs.up)
-          } else {
-            setErrMessages('')
-          }
-          break;
-        
-        case 'down': 
-          setCurrentIdx(currentIdx => currentIdx < 6 ? currentIdx + 3 : currentIdx );
-          if (currentIdx == 6 || currentIdx == 7 || currentIdx == 8) {
-            setErrMessages(errorMsgs.down)
-          } else {
-            setErrMessages('')
-          }
-            break;
-  
-        default: 
-          break;
+    switch (direction) {
+      case "left":
+        setCurrentIdx(currentIdx % 3 !== 0 ? currentIdx - 1 : currentIdx);
+        if (currentIdx == 0 || currentIdx == 3 || currentIdx == 6) {
+          setErrMessages(errorMsgs.left);
+        }
+        break;
 
+      case "right":
+        setCurrentIdx(currentIdx % 3 !== 2 ? currentIdx + 1 : currentIdx);
+        if (currentIdx == 2 || currentIdx == 5 || currentIdx == 8) {
+          setErrMessages(errorMsgs.right);
+        } else {
+          setErrMessages("");
+        }
+        break;
+
+      case "up":
+        setCurrentIdx((currentIdx) =>
+          currentIdx >= 3 ? currentIdx - 3 : currentIdx
+        );
+        if (currentIdx == 0 || currentIdx == 1 || currentIdx == 2) {
+          setErrMessages(errorMsgs.up);
+        } else {
+          setErrMessages("");
+        }
+        break;
+
+      case "down":
+        setCurrentIdx((currentIdx) =>
+          currentIdx < 6 ? currentIdx + 3 : currentIdx
+        );
+        if (currentIdx == 6 || currentIdx == 7 || currentIdx == 8) {
+          setErrMessages(errorMsgs.down);
+        } else {
+          setErrMessages("");
+        }
+        break;
+
+      default:
+        break;
     }
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
@@ -135,81 +137,81 @@ export default function AppFunctional(props) {
   }
 
   function onSubmit(evt) {
-
     evt.preventDefault();
-    if (inputValue === '') {
-      setErrMessages('Ouch: email is required')
-    }
-    if(inputValue === 'lady@gaga.com') {
-      setSuccessMsg('lady win #73')
-    }
 
-    axios.post(`http://localhost:9000/api/result`, 
-    { 
-      "x": (currentIdx % 3) + 1, 
-      "y": Math.floor(currentIdx / 3) + 1,
-      steps: steps,
-      email: inputValue
-    })
-    .then(response => {
-      console.log(response)
-      setSuccessMsg(response.data.message)
-      setInputValue(initialValues.email)
-      
-    })
-    .catch(err => {
-      console.error(err.message)
-      setErrMessages('foo@bar.baz failure #71')
-    })
+    axios
+      .post(`http://localhost:9000/api/result`, {
+        x: (currentIdx % 3) + 1,
+        y: Math.floor(currentIdx / 3) + 1,
+        steps: steps,
+        email: inputValue,
+      })
+      .then((response) => {
+        console.log(response);
+        setErrMessages("");
+        setSuccessMsg(response.data.message);
+        setInputValue(initialValues.email);
+      })
+      .catch((err) => {
+        setErrMessages(err.response.data.message);
+      });
     // Use a POST request to send a payload to the server.
   }
-  
 
   useEffect(() => {
-    
     if (currentIdx !== initialValues.index) {
-      setSteps(steps + 1)
+      setSteps(steps + 1);
     }
-    
-  }, [currentIdx])
+  }, [currentIdx]);
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">{`You moved ${steps} ${steps === 1 ? 'time' : 'times'}`}</h3>
+        <h3 id="steps">{`You moved ${steps} ${
+          steps === 1 ? "time" : "times"
+        }`}</h3>
       </div>
       <div id="grid">
-          {
-            [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-              <div key={idx} className={`square${idx === currentIdx ? ' active' : ''}`}>
-                {idx === currentIdx ? 'B' : null}
-              </div>
-            ))
-          }
-    
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
+          <div
+            key={idx}
+            className={`square${idx === currentIdx ? " active" : ""}`}
+          >
+            {idx === currentIdx ? "B" : null}
+          </div>
+        ))}
       </div>
       <div className="info">
         <h3 id="message">{errMessages || successMsg}</h3>
       </div>
       <div id="keypad">
-        <button id="left" onClick={() => getNextIndex('left')}>LEFT</button>
-        <button id="up" onClick={() => getNextIndex('up')}>UP</button>
-        <button id="right" onClick={() => getNextIndex('right')}>RIGHT</button>
-        <button id="down" onClick={() => getNextIndex('down')}>DOWN</button>
-        <button id="reset" onClick={reset}>reset</button>
+        <button id="left" onClick={() => getNextIndex("left")}>
+          LEFT
+        </button>
+        <button id="up" onClick={() => getNextIndex("up")}>
+          UP
+        </button>
+        <button id="right" onClick={() => getNextIndex("right")}>
+          RIGHT
+        </button>
+        <button id="down" onClick={() => getNextIndex("down")}>
+          DOWN
+        </button>
+        <button id="reset" onClick={reset}>
+          reset
+        </button>
       </div>
       <form onSubmit={onSubmit}>
-        <input 
-          onChange={onChange} 
-          id="email" 
-          type="email" 
+        <input
+          onChange={onChange}
+          id="email"
+          type="email"
           value={inputValue}
           placeholder="type email"
-        >
-        </input>
-        <input id="submit" type="submit" ></input>
+        ></input>
+        <input id="submit" type="submit"></input>
       </form>
     </div>
-  )
+  );
 }
